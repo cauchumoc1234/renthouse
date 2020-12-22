@@ -25,10 +25,11 @@
                     <a href="#" class="all-note" id="notall">Xem tất cả</a>
                 </div>
             </div>
-            <a id="link-profile" href="profile.html" style="margin-left:10px">
+            <a id="link-profile" href="{{ route('guest.userprofile') }}" style="margin-left:10px">
                 Xin chào, <span id="fullname">{{ $user->name }}</span>
-                <img src="{{ asset($user->image) }}" alt="profile_picture">
+                <img src="{{ asset($user->image) }}" alt="profile_picture" id="profile-picture">
             </a>
+            <a href="{{ route('guest.logout') }}" id="logout">Đăng xuất</a>
         @else
             <a href="{{ route('guest.login-register') }}">Đăng nhập / </a><a href="{{ route('guest.login-register') }}">Đăng ký</a>
         @endif

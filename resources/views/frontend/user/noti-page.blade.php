@@ -6,42 +6,37 @@
 <div class="container-fluid main">
     <div class="root">
         <h3>Thông báo</h3>
-        <nav id="pagnition">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+{{--        <nav id="pagnition">--}}
+{{--            <ul class="pagination">--}}
+{{--                <li class="page-item">--}}
+{{--                    <a class="page-link" href="#" aria-label="Previous">--}}
+{{--                        <span aria-hidden="true">&laquo;</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--                <li class="page-item"><a class="page-link" href="#">1</a></li>--}}
+{{--                <li class="page-item"><a class="page-link" href="#">2</a></li>--}}
+{{--                <li class="page-item"><a class="page-link" href="#">3</a></li>--}}
+{{--                <li class="page-item">--}}
+{{--                    <a class="page-link" href="#" aria-label="Next">--}}
+{{--                        <span aria-hidden="true">&raquo;</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--            </ul>--}}
+{{--        </nav>--}}
         <div class="note-container">
-            <div class="item unread">
-
-                <a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci dolorum est saepe eaque, officiis praesentium possimus similique aut molestiae impedit asperiores sit beatae sunt tempore voluptas facere consectetur! Qui, molestiae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, corrupti. Placeat eligendi, architecto doloremque cum at deserunt illum possimus esse. Saepe, praesentium? Magni perspiciatis eos, optio praesentium ad provident soluta.</a>
-                <p class="time">13m</p>
-            </div>
-            <div class="item">
-
-                <a href="#">Phòng bạn thích bị thuê rồi</a>
-                <p class="time">13m ago</p>
-            </div>
-            <div class="item unread">
-                <a href="#">Phòng bạn thích bị thuê rồi</a>
-                <p class="time">13m ago</p>
-            </div>
-            <div class="item unread">
-                <a href="#">Phòng bạn thích bị thuê rồi</a>
-                <p class="time">13m ago</p>
-            </div>
+            @foreach($data as $item)
+                @if($item->be_seen == 0)
+                    <div class="item unread">
+                        <a href="#">{{ $item->content }}</a>
+                        <p class="time">{{ $item->created_at }}</p>
+                    </div>
+                @else
+                    <div class="item">
+                        <a href="#">{{ $item->content }}</a>
+                        <p class="time">13m ago</p>
+                    </div>
+                @endif
+            @endforeach
         </div>
     </div>
 

@@ -6,7 +6,7 @@
 
             <!-- Grid column -->
             <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
-                <h6 class="mb-0">Get connected with us on social networks!</h6>
+                <h6 class="mb-0">Kết nối với chúng tôi trên các nền tảng mạng xã hội !</h6>
 
             </div>
             <!-- Grid column -->
@@ -54,9 +54,9 @@
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
 
             <!-- Content -->
-            <h6 class="text-uppercase font-weight-bold">Company name</h6>
+            <h6 class="text-uppercase font-weight-bold">renthouse</h6>
             <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-            <p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+            <p>Được sinh ra để giúp mọi người dễ dàng hơn trong việc tìm kiếm cho mình căn phòng phù hợp. Tránh rủi ro, tin rác, uy tín tạo niềm tin.</p>
 
         </div>
         <!-- Grid column -->

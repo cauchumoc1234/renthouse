@@ -134,6 +134,7 @@
             </div>
         </div>
     </div>
+
     <script>
         // hiện thanh search phụ khi kéo xuống
         $("document").ready(function() {
@@ -148,4 +149,5 @@
 
 
     </script>
+
 @endsection

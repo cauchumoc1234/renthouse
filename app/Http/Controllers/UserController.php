@@ -158,7 +158,7 @@ class UserController extends Controller
 
         if ($request->hasFile('new_avatar')) {
             // xóa file cũ
-            @unlink(public_path($user->avatar)); // hàm unlink của PHP không phải laravel , chúng ta thêm @ đằng trước tránh bị lỗi
+            @unlink(public_path($user->image)); // hàm unlink của PHP không phải laravel , chúng ta thêm @ đằng trước tránh bị lỗi
             // get file
             $file = $request->file('new_avatar');
             // get ten
@@ -239,7 +239,12 @@ class UserController extends Controller
         $user = Auth::user();
         $user->password = bcrypt($request->input('new_password'));
         $user->save();
-        return redirect()->route('owner.showProfile')->with('msg', 'Thay đổi mật khẩu thành công.');
+        if($user->role_id == 2) {
+            return redirect()->route('owner.showProfile')->with('msg', 'Thay đổi mật khẩu thành công.');
+        }
+        if($user->role_id == 3) {
+            return redirect()->back()->with('status', 'success');
+        }
     }
 
 

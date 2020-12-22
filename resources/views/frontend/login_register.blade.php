@@ -29,7 +29,7 @@
         }
         .form-box{
             width: 380px;
-            height: 500px;
+            height: 590px;
             position: relative;
             margin: 6% auto;
             background: rgb(255, 255, 255);
@@ -138,6 +138,9 @@
             color: red;
             margin-left: -148px;
         }
+        #email-msg {
+            font-size: 13px;
+        }
     </style>
     <div class="body main-section container-fluid">
         <div class="row">
@@ -167,12 +170,18 @@
 
                     </form>
                     <!-- form đăng ký -->
-                    <form id="register" action="" class="input-group">
-                        <input type="text" class="input-field" placeholder="User Name" required>
-                        <input type="email" class="input-field" placeholder="Email" required>
-                        <input type="password" class="input-field" placeholder="Enter Password" required>
-                        <input type="checkbox" name="" class="checkbox"><span class="rmb">I agree to ther term & conditions</span>
-                        <button type="submit" class="submit-btn">Register</button>
+                    <form role="form" id="register" action="{{ route('guest.postRegister') }}" class="input-group" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="text" class="input-field" name="name" placeholder="User Name" required>
+                        <input type="email" class="input-field" id="register_email" name="email" placeholder="Email" pattern=".+@.+(\.[a-z]{2,3})" title="Kiểm tra lại định dạng email" onchange="checkExistsEmail()"  required>
+                        <span id="email-msg"></span>
+                        <input type="password" class="input-field" id="register_password" name="password" placeholder="Enter Password" pattern=".{8,}" onchange="checkPass()" title="Mật khẩu phải từ 8 kí tự" required>
+                        <input type="password" class="input-field" id="register_re_password" name="re_password" placeholder="Enter Re-password" onchange="checkPass()" pattern=".{8,}" title="Mật khẩu phải từ 8 kí tự" required>
+                        <p class="" id="checkPass" style="color: red; font-size: 13px" ></p>
+                        <div>
+                            <input type="checkbox" name="" class="checkbox"><span class="rmb">I agree to ther term & conditions</span>
+                        </div>
+                        <button type="submit" class="submit-btn" id="submit_btn">Register</button>
                     </form>
                 </div>
 
@@ -180,4 +189,57 @@
         </div>
     </div>
     <script src="../frontend/js/float_form.js"></script>
+    <script>
+        function checkPass() {
+            var pass = $('#register_password').val();
+            var rePass = $('#register_re_password').val();
+            if (pass != rePass) {
+                $('#checkPass').html('Nhập lại mật khẩu không trùng khớp');
+                $('#submit_btn').attr('disabled', 'true');
+            }else {
+                $('#checkPass').html('');
+                $('#submit_btn').removeAttr('disabled');
+
+            }
+
+        }
+
+        function checkExistsEmail() {
+            let email = $('#register_email').val();
+            if(email == '') {
+                $('#email-msg').html('');
+                $('#submit_btn').removeAttr('disabled');
+            } else {
+                let msg = '';
+                $.ajax({
+                    url: base_url + '/checkExistsEmail/'+email, // base_url được khai báo ở đầu page == http://renthouse.co
+                    type: 'GET',
+                    data: {}, // dữ liệu truyền sang nếu có
+                    dataType: "json", // kiểu dữ liệu trả về
+                    success: function (response) { // success : kết quả trả về sau khi gửi request ajax
+                        if(response != true) {
+                            $('#submit_btn').attr('disabled', 'true');
+                            msg = 'Email này đã tồn tại. Vui lòng chọn email khác!';
+                            $('#email-msg').html(msg);
+                            $('#email-msg').css('color', 'red');
+                        } else {
+                            $('#submit_btn').removeAttr('disabled');
+                            msg = 'Email này có thể sử dụng';
+                            $('#email-msg').html(msg);
+                            $('#email-msg').css('color', '#00fa04');
+                        }
+                    },
+                    error: function (e) { // lỗi nếu có
+                        console.log(e.message);
+                    }
+                });
+            }
+
+        }
+    </script>
+    @if(session('register_status') == 'true')
+        <script>
+            alert('Tạo tài khoản thành công. Bây giờ bạn có thể đăng nhập và sử dụng dịch vụ của Renthouse!');
+        </script>
+    @endif
 @endsection

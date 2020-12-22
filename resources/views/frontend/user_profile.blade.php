@@ -103,17 +103,17 @@
 
     <div class="body container-fluid">
         <div class="account">
-            <img src="./image/Iron_Man_AIW_Profile.jpg" alt="">
+            <img src="{{ asset($user->image) }}" alt="Ảnh đại diện của {{ $user->name }}" id="user_image">
             <div class="info">
                 <p>Tài khoản của</p>
-                <p>Pham Duc Anh</p>
+                <p>{{ $user->name }}</p>
             </div>
         </div>
         <div class="profile row">
             <ul class="account-nav col-md-3 col-12">
                 <li class="is-actived" id="acc-show">
-                    <span><i class="fa fa-user" aria-hidden="true"></i></i></span>
-                    <span>Thông tin tài khoản</span>
+                    <span><i class="fa fa-user" aria-hidden="true"></i></span>
+                    <span>Thay đổi mật khẩu</span>
                 </li>
                 <li id="noti-show">
                     <span><i class="fa fa-bell" aria-hidden="true"></i></span>
@@ -125,11 +125,12 @@
                 </li>
             </ul>
 
-            <iframe id="mainFrame" class="col-12 col-md-7" src="{{ route('profile-info-page') }}" frameborder="0" scrolling="no"></iframe>
+            <iframe id="mainFrame" class="col-12 col-md-7" src="{{ route('changePassword-page') }}" frameborder="0" scrolling="no"></iframe>
         </div>
     </div>
 
     <script src="../frontend/js/profile_sw.js"></script>
     <script src="../frontend/js/iframeResizer.min.js"></script>
     <script src="../frontend/js/resize-profile.js"></script>
+
 @endsection

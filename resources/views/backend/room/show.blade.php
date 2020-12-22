@@ -191,6 +191,14 @@
                             <td><b>Lượt yêu thích</b></td>
                             <td>{{ $room_likes }}</td>
                         </tr>
+                        <tr>
+                            <td><b>Vote</b></td>
+                            @if($star_voted == 0)
+                                <td>Chưa được đánh giá.</td>
+                            @else
+                                <td>{{ $star_voted }} sao</td>
+                            @endif
+                        </tr>
                         </tbody>
                     </table>
                     <h3>Ảnh chi tiết phòng trọ</h3>

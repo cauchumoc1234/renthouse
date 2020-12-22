@@ -107,7 +107,7 @@
             margin-right: 20px;
         }
         .star .st-checked{
-            color: rgb(182, 182, 33);
+            color:  #ffff00;
         }
         .comment-section{
             width: 100%;
@@ -175,12 +175,13 @@
         .rate-btn{
             display: block;
             /* height: 15px; */
-            font-size: 12px;
+            font-size: 16px;
             border-radius: 10px;
             border: none;
             margin-right: 10px;
             width: auto;
             word-wrap: none;
+            padding: 8px;
         }
         .overlay{
             display: flex;
@@ -302,20 +303,48 @@
                         <span class="address">{{ $data->address }}</span>
                     </div>
                     <div class="rate-head">
-
-                            <span>Đánh giá: 3.0 <div class="star">
-                                <span class="fa fa-star st-checked"></span>
-                                <span class="fa fa-star st-checked"></span>
-                                <span class="fa fa-star st-checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                            </div></span>
+                        @if($star_voted == 0)
+                            <span>Đánh giá: <span id="voted-content">Chưa có đánh giá nào</span>
+                                <div class="star">
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                </div>
+                            </span>
+                        @elseif($star_voted > 0 && $star_voted < 1)
+                            <span>Đánh giá: <span id="voted-content">{{ $star_voted . ' sao' }}</span>
+                                <div class="star">
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                    <span class="fa fa-star" id="star-icon"></span>
+                                </div>
+                            </span>
+                        @else
+                            <?php $star_voted = round($star_voted, 0); ?>
+                            <span>Đánh giá: <span id="voted-content">{{ $star_voted . ' sao' }}</span>
+                                <div class="star">
+                                    @for($i=0; $i < $star_voted; $i++)
+                                        <span class="fa fa-star st-checked" id="star-icon"></span>
+                                    @endfor
+                                    @for($i=0; $i < 5-$star_voted; $i++)
+                                        <span class="fa fa-star" id="star-icon"></span>
+                                    @endfor
+                                </div>
+                            </span>
+                        @endif
                         <span>Lượt xem: <span>{{ $data->views }}</span></span>
                     </div>
-                    <div class="add-to-wl btn btn-success">
-                        <i class="fa fa-heart" aria-hidden="true"></i>
-                        Lưu phòng này
-                    </div>
+                    <button type="button" onclick="storeLikedRoom({{ $data->id }})" class="add-to-wl btn btn-success" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fa fa-heart" aria-hidden="true"></i>
+                        Lưu phòng này</button>
+
+{{--                    <div class="add-to-wl btn btn-success">--}}
+{{--                        <i class="fa fa-heart" aria-hidden="true"></i>--}}
+{{--                        Lưu phòng này--}}
+{{--                    </div>--}}
                 </div>
                 <!-- thông tin chủ -->
                 <div class="owner-info adjust-font own col-12">
@@ -408,16 +437,16 @@ giá 1tr3-1tr5/tháng/người ( bao gồm điện nước + wifi , không ph
                             </div>
                             <span id="view-allcmt" href="#" class="ml-2">Xem tất cả</span>
                         </div>
-                        <form action="" method="post" class="your-cmt">
-                            <textarea name="" id="" cols="30" rows="1" maxlength="150" placeholder="Nhập bình luận..."></textarea>
+                        <form class="your-cmt" id="myForm">
+                            <textarea name="" id="user_comment" cols="30" rows="1" maxlength="150" placeholder="Nhập bình luận..."></textarea>
                             <div class="rate-section">
-                                <button type="button" class="rate-btn ">Đánh giá</button>
+                                <button type="button" class="rate-btn " >Đánh giá</button>
                                 <div class="overlay">
-                                    <input type="radio" name="rate"  id="rate-1">
-                                    <input type="radio" name="rate"   id="rate-2">
-                                    <input type="radio" name="rate"   id="rate-3">
-                                    <input type="radio" name="rate"   id="rate-4">
-                                    <input type="radio" name="rate"   id="rate-5">
+                                    <input type="radio" name="rate"  id="rate-1" value="1">
+                                    <input type="radio" name="rate"   id="rate-2" value="2">
+                                    <input type="radio" name="rate"   id="rate-3" value="3">
+                                    <input type="radio" name="rate"   id="rate-4" value="4">
+                                    <input type="radio" name="rate"   id="rate-5" value="5">
                                     <label for="rate-1" class="rate" id="s1"><i class="fa fa-star" aria-hidden="true"></i></label>
                                     <label for="rate-2" class="rate" id="s2"><i class="fa fa-star" aria-hidden="true"></i></label>
                                     <label for="rate-3" class="rate" id="s3"><i class="fa fa-star" aria-hidden="true"></i></label>
@@ -426,9 +455,26 @@ giá 1tr3-1tr5/tháng/người ( bao gồm điện nước + wifi , không ph
                                     <button id="del-rate" >Xoá</button>
                                 </div>
                             </div>
-                            <button class="post-cmt">Gửi</button>
                         </form>
+                        <div class="guest-btn">
+                            <button class="post-cmt btn btn-primary" onclick="userComment({{ $data->id }})" style="margin-top: 5px" data-toggle="modal" data-target=".bd-example-modal-sm">Gửi bình luận</button>
+                            <button class="post-cmt btn btn-primary" onclick="storeVoted({{ $data->id }})" style="margin-top: 5px; margin-left: 630px;" data-toggle="modal" data-target=".bd-example-modal-sm">Gửi đánh giá</button>
+                        </div>
+
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                </div>
+                <div class="modal-body storeliked-msg">
+
                 </div>
             </div>
         </div>

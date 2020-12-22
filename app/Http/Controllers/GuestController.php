@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\City;
 use App\District;
+use App\Notify;
 use App\Post;
 use App\Room;
 use App\Room_image;
 use App\Room_type;
 use App\User;
+use App\User_comment;
 use App\User_like;
 use App\User_views;
 use App\User_vote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use MongoDB\Driver\Session;
 
 class GuestController extends Controller
 {
@@ -30,6 +33,12 @@ class GuestController extends Controller
             'newest_rooms' => $newest_rooms,
             'posts' => $posts,
         ]);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/');
     }
 
     public function get_login_register()
@@ -68,6 +77,56 @@ class GuestController extends Controller
             }
         }
         return redirect()->back()->with('msg', 'Email hoặc Password không chính xác');
+    }
+
+    public function postRegister(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+        ]);
+
+        $is_active = 1;
+        //luu vào csdl
+        $user = new User();
+        $user->name = $request->input('name'); // họ tên
+        $user->email = $request->input('email'); // email
+        $user->password = bcrypt($request->input('password')); // mật khẩu
+        $user->role_id = 3;
+        $user->is_active = $is_active;
+        $user->save();
+
+        // chuyen dieu huong trang
+        return redirect()->route('guest.login-register')->with('register_status', 'true');
+    }
+
+    public function getProfile()
+    {
+        $user = Auth::user();
+        return view('frontend.user_profile', [
+            'user' => $user,
+        ]);
+    }
+    public function getProfileinfo()
+    {
+        $user = Auth::user();
+        return view('frontend.user.profile_info', [
+            'user' => $user,
+        ]);
+    }
+    public function getChangePassword()
+    {
+        return view('frontend.user.changePassword');
+    }
+
+    public function getNoti()
+    {
+        $user = Auth::user();
+        $data = Notify::where(['receive_id' => $user->id])->get();
+        return view('frontend.user.noti-page', [
+            'data' => $data
+        ]);
     }
 
     public function getAllPosts()
@@ -121,6 +180,7 @@ class GuestController extends Controller
             if($user_view_check == null) { // neu chua ton tai du lieu thi tao moi
                 $user_view = new User_views();
                 $user_view->user_id = $user_id;
+                $user_view->date_views = date('Y-m-d');
                 $user_view->room_id = $room_id;
                 $user_view->save();
             } else { // neu da ton tai du lieu roi thi cap nhat thoi gian xem gan nhat
@@ -129,13 +189,22 @@ class GuestController extends Controller
             }
         }
         // thống kê lượt vote của room
-//        $vote_statistics = User_vote::where(['room_id' => $room_id])->get();
-//        $vote_avg = 0;
-//        foreach($vote_statistics as $vote) {
-//            $vote_avg += $vote->star;
-//        }
-//        $vote_avg = $vote_avg/count($vote_statistics);
-//        $vote_avg = round($vote_avg, 2); // lam tron den 2 chu so thap phan
+        $star_voted = 0;
+        $room_voted = User_vote::where(['room_id' => $room_id ])->get();
+        $room_voted_length  = count($room_voted);
+        if($room_voted_length == 0)
+        {
+            $star_voted = 0;
+        } else {
+            foreach($room_voted as $item) {
+                $star_voted += $item->star;
+            }
+            $star_voted /= $room_voted_length;
+            $star_voted = round($star_voted, 2);
+            if($star_voted > 5) {
+                $star_voted = 5;
+            }
+        }
 
 
 
@@ -163,21 +232,95 @@ class GuestController extends Controller
             'district_name' => $district_name,
             'city_name' => $city_name,
             'owner_name' => $owner_name,
-            'owner_phone' => $owner_phone
+            'owner_phone' => $owner_phone,
+            'star_voted' => $star_voted,
         ]);
     }
 
-
-
-    public function storeLiked($user_id, $room_id)
+    public function updateProfile(Request $request)
     {
-        $like = new User_like();
-        $like->user_id = $user_id;
-        $like->room_id = $room_id;
-        $like->save();
-        return response()->json([
-            'status' => true
-        ], 200);
+
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+        ]);
+        $user = Auth::user();
+
+        //luu vào csdl
+        $user->name = $request->input('name'); // họ tên
+        $user->birthday = $request->input('birthday');
+        $user->CMND = $request->input('cmnd');
+        $user->phone = $request->input('phone');
+        $user->address = $request->input('address');
+        $user->gender = $request->input('gender');
+        if ($request->hasFile('new_avatar')) {
+            // xóa file cũ
+            @unlink(public_path($user->image)); // hàm unlink của PHP không phải laravel , chúng ta thêm @ đằng trước tránh bị lỗi
+            // get file
+            $file = $request->file('new_avatar');
+            // get ten
+            $filename = time().'_'.$file->getClientOriginalName();
+            // duong dan upload
+            $path_upload = 'uploads/user/';
+            // upload file
+            $request->file('new_avatar')->move($path_upload,$filename);
+
+            $user->image = $path_upload.$filename;
+        }
+
+        $user->save();
+        $new_link_image = 'http://renthouse.co/' . $user->image;
+        // chuyen dieu huong trang
+        return redirect()->back()->with('update_status', 'true');
+    }
+    public  function postComment()
+    {
+        $status = false;
+        if(!Auth::check()) {
+            $status = false;
+//            $msg = 'Vui lòng đăng nhập để bình luận';
+            return json_encode($status);
+        } else {
+            $user = Auth::user();
+            $comment = $_GET['comment'];
+            $room_id = $_GET['room_id'];
+            $user_cmt = new User_comment();
+            $user_cmt->user_id = $user->id;
+            $user_cmt->room_id = $room_id;
+            $user_cmt->comment = $comment;
+            $user_cmt->save();
+            $status = true;
+            return json_encode($status);
+        }
+
+
+//        return json_encode($comment);
+    }
+
+    public function getLinkAvatarUser($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        $link = 'http://renthouse.co/' . $user->image;
+        return json_encode($link);
+    }
+
+
+    public function storeLiked($room_id)
+    {
+        $status = false;
+        if(Auth::check())
+        {
+            $status = true;
+            $user = Auth::user();
+            $like = new User_like();
+            $like->user_id = $user->id;
+            $like->room_id = $room_id;
+            $like->save();
+            return json_encode($status);
+        }
+        else {
+            return json_encode($status);
+        }
+
     }
 
     public function getAllRoomViewed($id)
@@ -210,24 +353,51 @@ class GuestController extends Controller
 
     public function storeVoted($room_id, $count_star)
     {
-        $user = Auth::user();
-        $user_id = $user->id;
-        $user_vote_check = User_vote::where(['user_id' => $user_id, 'room_id' => $room_id])->first();
-        if($user_vote_check == null) { // neu chua ton tai du lieu thi tao moi
-            $user_vote = new User_vote();
-            $user_vote->user_id = $user_id;
-            $user_vote->room_id = $room_id;
-            $user_vote->star = $count_star;
-            $user_vote->save();
-        } else { // neu da ton tai du lieu roi thi cap nhat thoi gian vote gan nhat va luot sao vote
-            $user_vote_check->star = $count_star;
-            $user_vote_check->updated_at = now();
-            $user_vote_check->save();
+        $status = false;
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            $user_id = $user->id;
+            $user_vote_check = User_vote::where(['user_id' => $user_id, 'room_id' => $room_id])->first();
+            if($user_vote_check == null) { // neu chua ton tai du lieu thi tao moi
+                $user_vote = new User_vote();
+                $user_vote->user_id = $user_id;
+                $user_vote->room_id = $room_id;
+                $user_vote->star = $count_star;
+                $user_vote->save();
+            } else { // neu da ton tai du lieu roi thi cap nhat thoi gian vote gan nhat va luot sao vote
+                $user_vote_check->star = $count_star;
+                $user_vote_check->updated_at = now();
+                $user_vote_check->save();
+            }
+            $status = true;
+            return json_encode($status);
+        } else {
+            $status = false;
+            return json_encode($status);
         }
-        return response()->json([
-            'status' => true
-        ], 200);
+
     }
 
+    public function getRoomVotedStar($room_id)
+    {
+        $star_voted = 0;
+        $room_voted = User_vote::where(['room_id' => $room_id ])->get();
+        $room_voted_length  = count($room_voted);
+        if($room_voted_length == 0)
+        {
+            $star_voted = 0;
+        } else {
+            foreach($room_voted as $item) {
+                $star_voted += $item->star;
+            }
+            $star_voted /= $room_voted_length;
+            $star_voted = round($star_voted, 0);
+            if($star_voted > 5) {
+                $star_voted = 5;
+            }
+        }
+        return json_encode($star_voted);
+    }
 
 }

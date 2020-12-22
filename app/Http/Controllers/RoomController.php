@@ -9,6 +9,7 @@ use App\Room;
 use App\Room_type;
 use App\City;
 use App\District;
+use App\User_vote;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -166,7 +167,24 @@ class RoomController extends Controller
         $room_likes = 0;
         $likes_query = "SELECT count(*) AS 'likes' FROM user_like WHERE room_id = '$id'";
         $room_likes = DB::select($likes_query)[0]->likes;
-        // end
+        // luot yeu thich cua phong tro - end
+
+        // luot vote cua phong tro - start
+        $star_voted = 0;
+        $room_voted = User_vote::where(['room_id' => $id ])->get();
+        $room_voted_length  = count($room_voted);
+        if($room_voted_length == 0)
+        {
+            $star_voted = 0;
+        } else {
+            foreach($room_voted as $item) {
+                $star_voted += $item->star;
+            }
+            $star_voted /= $room_voted_length;
+            $star_voted = round($star_voted, 2);
+        }
+
+        // luot vote cua phong tro - end
         return view('backend.room.show', [
             'title' => 'Chi Tiết Phòng Trọ',
             'data' => $data,
@@ -174,6 +192,7 @@ class RoomController extends Controller
             'room_detailImages' => $room_detailImages,
             'facilities' => $facilities,
             'room_likes' => $room_likes,
+            'star_voted' => $star_voted,
         ]);
     }
 

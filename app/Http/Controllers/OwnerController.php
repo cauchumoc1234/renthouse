@@ -553,7 +553,7 @@ class OwnerController extends Controller
 
         if ($request->hasFile('new_avatar')) {
             // xóa file cũ
-            @unlink(public_path($user->avatar)); // hàm unlink của PHP không phải laravel , chúng ta thêm @ đằng trước tránh bị lỗi
+            @unlink(public_path($user->image)); // hàm unlink của PHP không phải laravel , chúng ta thêm @ đằng trước tránh bị lỗi
             // get file
             $file = $request->file('new_avatar');
             // get ten

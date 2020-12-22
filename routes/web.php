@@ -20,6 +20,15 @@ Route::get('/login', 'GuestController@get_login_register')->name('guest.login-re
 
 Route::post('/postLogin', 'GuestController@postLogin')->name('guest.postLogin');
 
+Route::get('/logout', 'GuestController@logout')->name('guest.logout');
+
+Route::post('/postRegister', 'GuestController@postRegister')->name('guest.postRegister');
+// Route cho trang user profile
+Route::get('/userprofile', 'GuestController@getProfile')->name('guest.userprofile');
+Route::get('/profile-info', 'GuestController@getProfileinfo')->name('profile-info-page');
+Route::get('/changePassword', 'GuestController@getChangePassword')->name('changePassword-page');
+Route::get('/noti-page', 'GuestController@getNoti')->name('noti-page');
+// end route cho trang user profile
 Route::get('/blog', 'GuestController@getAllPosts')->name('guest.blog');
 
 Route::get('/blogDetail/{post_id}', 'GuestController@blogDetail')->name('guest.blogDetail');
@@ -29,21 +38,20 @@ Route::get('/room', 'GuestController@getAllRoom')->name('guest.allroom');
 
 Route::get('/room/{room_id}', 'GuestController@showRoomDetail')->name('guest.showroom');
 
+Route::match( ['put','patch'],'/updateProfile', 'GuestController@updateProfile')->name('guest.updateProfile');
 
+Route::get('/getAvatarUser/{user_id}', 'GuestController@getLinkAvatarUser');
 
+Route::get('/guestComment', 'GuestController@postComment');
 
+Route::get('/storeVoted/{room_id}/{count_star}', 'GuestController@storeVoted')->name('uservoted.store');
 
+Route::get('/getVotedStar/{room_id}', 'GuestController@getRoomVotedStar');
 
-Route::get('/userprofile', function () {
-    return view('frontend.user_profile');
-});
+Route::get('/storeLiked/{room_id}', 'GuestController@storeLiked')->name('likedroom.store');
 // Cac route o day phuc vu cho viec select iframe page o trang user
-Route::get('/profile-info', function () {
-   return view('frontend.user.profile_info');
-})->name('profile-info-page');
-Route::get('/noti-page', function () {
-    return view('frontend.user.noti-page');
-});
+
+
 Route::get('/liked-rooms', function () {
     return view('frontend.user.liked_rooms');
 });
@@ -55,8 +63,7 @@ Route::get('/liked-rooms', function () {
 
 //Route::get('/user/getAllRoomViewed', 'UserViewedController@getAllRoomViewed')->name('userviewed.getAllRoomViewed');
 //Route::get('/user/storeRoomViewed/{user_id}/{room_id}', 'UserViewedController@storeViewed')->name('userviewed.store');
-//Route::get('/user/storeVoted/{user_id}/{room_id}/{count_star}', 'UserVotedController@storeVoted')->name('uservoted.store');
-//Route::get('/user/storeLiked/{user_id}/{room_id}', 'UserLikedController@storeLiked')->name('userliked.store');
+
 
 Route::get('/admin/login', 'AdminController@login')->name('admin.login');
 //Route::get('/login', 'ShopController@login')->name('shop.login');
