@@ -1,15 +1,28 @@
 @extends('frontend.layouts.main')
 @section('content')
+    <style>
+        .logo-name  {
+            color: #fff;
+            font-size: 30px;
+            position: absolute;
+            top: 75px;
+            margin-left: 10px;
+            font-weight: 500;
+        }
 
+    </style>
     <!-- phần giới thiệu trang -->
     <div class="main-bar">
         <div class="info">
             <div class="logo">
-                <img src="https://www.ohanaliving.vn/8541c2b17a0729942ed2a6f13b7b13e4.svg" alt="logo">
+                <div class="my-logo">
+                    <img src="https://grandetest.com/theme/findhouse-html/images/header-logo.png" alt="logo">
+                    <span class="logo-name">Renthouse</span>
+                </div>
                 <div class="option">
                     <a href="#" class="staying">Trang chủ</a>
                     <a href="{{ route('guest.blog') }}">Blog</a>
-                    <a href="#">Đăng phòng</a>
+                    <a href="{{ route('owner.room.create') }}">Đăng phòng</a>
                 </div>
             </div>
             <p class="short">Ứng dụng tìm kiếm phòng trọ miễn phí cho người đi thuê hàng đầu Việt Nam</p>
@@ -18,31 +31,31 @@
                     <span><i class="fas fa-map-marker-alt icon"></i></span>
                     <!-- nút chọn vị trí -->
                     <select name="city" id="" class="dropBtn">
-                        <option value="" selected>Tất cả thành phố</option>
+                        <option value="0" selected>Tất cả thành phố</option>
                         <option value="Hanoi">Hà Nội</option>
-                        <option value="">Đà Nẵng</option>
-                        <option value="">TP. Hồ Chí Minh</option>
+                        <option value="2">Đà Nẵng</option>
+                        <option value="3">TP. Hồ Chí Minh</option>
                     </select>
                 </div>
-                <form action="" class="search-input" method="GET">
-                    <input type="text" placeholder="Tìm kiếm theo địa điểm, quận, tên đường...">
+                <form action="{{ route('guest.searchFromHome') }}" class="search-input" method="GET">
+                    <input type="text" name="key_title" placeholder="Tìm kiếm theo địa điểm, quận, tên đường...">
                     <div class="submit-button">
-                        <button id="search-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        <button type="submit" id="search-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
                     </div>
                 </form>
 
             </div>
-            <div class="app-link short">
-                <p>Tải app để có trải nghiệm tuyệt vời</p>
-                <div class="app">
-                    <a href="">
-                        <img src="https://www.ohanaliving.vn/3f9605492bb7388bbc16f25a16778cbc.png" alt="AppStore">
-                    </a>
-                    <a href="">
-                        <img src="https://www.ohanaliving.vn/137381da1471b1c2ad438c213a34b0a4.png" alt="AppStore">
-                    </a>
-                </div>
-            </div>
+{{--            <div class="app-link short">--}}
+{{--                <p>Tải app để có trải nghiệm tuyệt vời</p>--}}
+{{--                <div class="app">--}}
+{{--                    <a href="">--}}
+{{--                        <img src="https://www.ohanaliving.vn/3f9605492bb7388bbc16f25a16778cbc.png" alt="AppStore">--}}
+{{--                    </a>--}}
+{{--                    <a href="">--}}
+{{--                        <img src="https://www.ohanaliving.vn/137381da1471b1c2ad438c213a34b0a4.png" alt="AppStore">--}}
+{{--                    </a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
     </div>
 
@@ -52,7 +65,7 @@
             <h2>Xu hướng tìm kiếm</h2>
             <div class="items">
                 @foreach($most_searched_districts as $district)
-                    <a class="item" href="#" style="text-decoration: none ;background: linear-gradient(0deg, rgba(2,0,36,0.8) 10%, rgba(4,0,0,0.1) 100%),url('{{ asset($district->image) }}') no-repeat 30% center;background-size: cover;"><span>{{ $district->name }}</span></a>
+                    <a class="item" href="{{ route('guest.searchByDistrict', ['district_id' => $district->id]) }}" style="text-decoration: none ;background: linear-gradient(0deg, rgba(2,0,36,0.8) 10%, rgba(4,0,0,0.1) 100%),url('{{ asset($district->image) }}') no-repeat 30% center;background-size: cover;"><span>{{ $district->name }}</span></a>
                 @endforeach
             </div>
 
@@ -97,7 +110,7 @@
                                             </div>
                                             <div class="line line-5">
                                                 <span class="icon"><i class="fas fa-money-check    "></i></span>
-                                                <span class="price">6 triệu/tháng</span>
+                                                <span class="price">{{  number_format($room->price,0,",",".") .' đồng/tháng' }}</span>
                                             </div>
                                         </div>
                                     </div>

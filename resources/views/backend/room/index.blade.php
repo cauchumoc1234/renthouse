@@ -78,7 +78,9 @@
             </div>
         </div>
         <div class="col-xs-12" style="display: flex; justify-content: center;">
-            {{ $data->links() }}
+            @if($paginate == true)
+                {{ $data->links() }}
+            @endif
 
         </div>
     </div>

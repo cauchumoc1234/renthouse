@@ -28,6 +28,10 @@ Route::get('/userprofile', 'GuestController@getProfile')->name('guest.userprofil
 Route::get('/profile-info', 'GuestController@getProfileinfo')->name('profile-info-page');
 Route::get('/changePassword', 'GuestController@getChangePassword')->name('changePassword-page');
 Route::get('/noti-page', 'GuestController@getNoti')->name('noti-page');
+Route::get('/liked-rooms', 'GuestController@getLikedRooms')->name('liked-rooms');
+Route::get('/liked-room', function (){
+   return view('frontend.user.liked_room');
+});
 // end route cho trang user profile
 Route::get('/blog', 'GuestController@getAllPosts')->name('guest.blog');
 
@@ -49,17 +53,22 @@ Route::get('/storeVoted/{room_id}/{count_star}', 'GuestController@storeVoted')->
 Route::get('/getVotedStar/{room_id}', 'GuestController@getRoomVotedStar');
 
 Route::get('/storeLiked/{room_id}', 'GuestController@storeLiked')->name('likedroom.store');
+
+Route::get('/deleteLikedRoom/{room_id}', 'GuestController@destroyLikedRoom');
 // Cac route o day phuc vu cho viec select iframe page o trang user
 
+Route::get('/roomFilter/{under_p}/{r_type}/{c_id}/{d_id}/{w_owner}', 'SearchController@roomFilter')->name('guest.testFilter');
 
-Route::get('/liked-rooms', function () {
-    return view('frontend.user.liked_rooms');
-});
+Route::get('/getSendReport/{room_id}', 'GuestController@getSendReport')->name('guest.getSendReport');
+Route::get('/storeReport', 'GuestController@storeReport')->name('guest.storeReport');
+
+//Route::get('/liked-rooms', function () {
+//    return view('frontend.user.liked_rooms');
+//});
 // end iframe trang user
 
-// end ghep frontend - test
-
-// xu ly de lam sao user dang nhap moi dung dc, se lam sau khi test xong viec get giu lieu = ajax
+Route::get('/searchFromHome', 'SearchController@searchFromHome')->name('guest.searchFromHome');
+Route::get('/searchByDistrict/{district_id}', 'SearchController@searchByDistrict')->name('guest.searchByDistrict');
 
 //Route::get('/user/getAllRoomViewed', 'UserViewedController@getAllRoomViewed')->name('userviewed.getAllRoomViewed');
 //Route::get('/user/storeRoomViewed/{user_id}/{room_id}', 'UserViewedController@storeViewed')->name('userviewed.store');

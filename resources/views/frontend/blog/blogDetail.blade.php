@@ -94,9 +94,11 @@
             </article>
             <div class="other-blogs">
                 <h6>Tin liên quan</h6>
-                <a href="#">Kinh nghiệm tìm phòng trọ: Sinh viên nên tìm phòng trọ qua kênh nào</a>
-                <a href="#">Danh sách nhà trọ homestay xác thực khu vực quận 1</a>
-                <a href="#">Kinh nghiệm tìm phòng trọ: Sinh viên nên tìm phòng trọ qua kênh nào</a>
+                @foreach($related_post as $item)
+                    <a href="{{ route('guest.blogDetail', ['post_id' => $item->id]) }}">{{ $item->title }}</a>
+                @endforeach
+{{--                    <a href="#">Danh sách nhà trọ homestay xác thực khu vực quận 1</a>--}}
+{{--                <a href="#">Kinh nghiệm tìm phòng trọ: Sinh viên nên tìm phòng trọ qua kênh nào</a>--}}
             </div>
         </div>
         <script src="../frontend/js/drop_menu.js"></script>

@@ -10,6 +10,7 @@ use App\Room;
 use App\Room_image;
 use App\Room_type;
 use App\User;
+use App\User_vote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -307,6 +308,23 @@ class AdminController extends Controller
         $likes_query = "SELECT count(*) AS 'likes' FROM user_like WHERE room_id = '$data->id'";
         $room_likes = DB::select($likes_query)[0]->likes;
         // end
+        // luot vote cua phong tro
+        $star_voted = 0;
+        $room_voted = User_vote::where(['room_id' => $data->id ])->get();
+        $room_voted_length  = count($room_voted);
+        if($room_voted_length == 0)
+        {
+            $star_voted = 0;
+        } else {
+            foreach($room_voted as $item) {
+                $star_voted += $item->star;
+            }
+            $star_voted /= $room_voted_length;
+            $star_voted = round($star_voted, 2);
+            if($star_voted > 5) {
+                $star_voted = 5;
+            }
+        }
         return view('backend.room.show', [
             'title' => 'Phòng trọ được xem nhiều nhất',
             'data' => $data,
@@ -314,7 +332,8 @@ class AdminController extends Controller
             'room_detailImages' => $room_detailImages,
             'facilities' => $facilities,
             'room_likes' => $room_likes,
-            'type_page' => 'filter_view'
+            'type_page' => 'filter_view',
+            'star_voted' => $star_voted,
         ]);
     }
 
@@ -364,6 +383,23 @@ class AdminController extends Controller
         $room_detailImages =  Room_image::where(['room_id' => $data->id ])->orderBy('position', 'ASC')->get();
         // luot yeu thich cua phong tro
         $room_likes = $result->likes;
+        // so sao voted cua room
+        $star_voted = 0;
+        $room_voted = User_vote::where(['room_id' => $data->id ])->get();
+        $room_voted_length  = count($room_voted);
+        if($room_voted_length == 0)
+        {
+            $star_voted = 0;
+        } else {
+            foreach($room_voted as $item) {
+                $star_voted += $item->star;
+            }
+            $star_voted /= $room_voted_length;
+            $star_voted = round($star_voted, 2);
+            if($star_voted > 5) {
+                $star_voted = 5;
+            }
+        }
         return view('backend.room.show', [
             'title' => 'Phòng trọ được nhiều lượt yêu thích nhất',
             'data' => $data,
@@ -371,7 +407,8 @@ class AdminController extends Controller
             'room_detailImages' => $room_detailImages,
             'facilities' => $facilities,
             'room_likes' => $room_likes,
-            'type_page' => 'filter_like'
+            'type_page' => 'filter_like',
+            'star_voted' => $star_voted,
         ]);
     }
 

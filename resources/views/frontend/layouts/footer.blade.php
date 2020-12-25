@@ -1,3 +1,7 @@
+<?php
+    $blog = \App\Post::where(['is_active' => 1])->limit(4)->get();
+?>
+
 <div style="background-color: #F7346F;">
     <div class="container">
 
@@ -65,19 +69,19 @@
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
 
             <!-- Links -->
-            <h6 class="text-uppercase font-weight-bold">Products</h6>
+            <h6 class="text-uppercase font-weight-bold">Về Renthouse</h6>
             <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
             <p>
-                <a href="#!">MDBootstrap</a>
+                <a href="#!">Giới thiệu</a>
             </p>
             <p>
-                <a href="#!">MDWordPress</a>
+                <a href="{{ route('guest.allroom') }}">Phòng trọ</a>
             </p>
             <p>
-                <a href="#!">BrandFlow</a>
+                <a href="{{ route('guest.blog') }}">Bài viết</a>
             </p>
             <p>
-                <a href="#!">Bootstrap Angular</a>
+                <a href="#!">Tuyển dụng</a>
             </p>
 
         </div>
@@ -87,19 +91,18 @@
         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
 
             <!-- Links -->
-            <h6 class="text-uppercase font-weight-bold">Useful links</h6>
+            <h6 class="text-uppercase font-weight-bold">Thông tin hữu ích</h6>
             <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+
+
             <p>
-                <a href="#!">Your Account</a>
+                <a href="#!">Quy định cần biết</a>
             </p>
             <p>
-                <a href="#!">Become an Affiliate</a>
+                <a href="#!">Hỗ trợ khách hàng</a>
             </p>
             <p>
-                <a href="#!">Shipping Rates</a>
-            </p>
-            <p>
-                <a href="#!">Help</a>
+                <a href="#!">An toàn mua bán</a>
             </p>
 
         </div>
@@ -109,16 +112,16 @@
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
 
             <!-- Links -->
-            <h6 class="text-uppercase font-weight-bold">Contact</h6>
+            <h6 class="text-uppercase font-weight-bold">Liên hệ</h6>
             <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
             <p>
-                <i class="fa fa-home mr-3" aria-hidden="true"></i> New York, NY 10012, US</p>
+                <i class="fa fa-home mr-3" aria-hidden="true"></i>144 Xuân Thủy, Dịch Vọng Hậu, Cầu Giấy, Hà Nội</p>
             <p>
-                <i class="fa fa-envelope mr-3" aria-hidden="true"></i> info@example.com</p>
+                <i class="fa fa-envelope mr-3" aria-hidden="true"></i> renthouse.84@gmail.com</p>
             <p>
-                <i class="fa fa-phone mr-3" aria-hidden="true"></i> + 01 234 567 88</p>
-            <p>
-                <i class="fa fa-print white-text" aria-hidden="true"></i> + 01 234 567 89</p>
+                <i class="fa fa-phone mr-3" aria-hidden="true"></i>0838033333</p>
+{{--            <p>--}}
+{{--                <i class="fa fa-print mr-3 white-text" aria-hidden="true"></i>0838033333</p>--}}
 
         </div>
         <!-- Grid column -->
@@ -131,6 +134,32 @@
 
 <!-- Copyright -->
 <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="">Our Team</a>
+    <a href="">Rent House</a>
 </div>
 <!-- Copyright -->
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            xfbml            : true,
+            version          : 'v9.0'
+        });
+    };
+
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+
+<div class="fb-customerchat"
+     attribution=setup_tool
+     page_id="101421108555719"
+     theme_color="#fa3c4c"
+     logged_in_greeting="Chào bạn. Chúng tôi có thể giúp gì cho bạn nhỉ ?"
+     logged_out_greeting="Chào bạn. Chúng tôi có thể giúp gì cho bạn nhỉ ?">
+</div>

@@ -86,6 +86,9 @@
             overflow-y: scroll;
             transition: 0.2s;
         }
+        #fb-root {
+            display: none!important;
+        }
         @media only screen and (max-width: 768px){
             iframe{
                 margin: 20px 2%;
@@ -119,10 +122,10 @@
                     <span><i class="fa fa-bell" aria-hidden="true"></i></span>
                     <span>Thông báo</span>
                 </li>
-                <li id="liked-show">
-                    <span><i class="fa fa-heart" aria-hidden="true"></i></span>
-                    <span>Phòng đã thích</span>
-                </li>
+{{--                <li id="liked-show">--}}
+{{--                    <span><i class="fa fa-heart" aria-hidden="true"></i></span>--}}
+{{--                    <span>Phòng đã thích</span>--}}
+{{--                </li>--}}
             </ul>
 
             <iframe id="mainFrame" class="col-12 col-md-7" src="{{ route('changePassword-page') }}" frameborder="0" scrolling="no"></iframe>

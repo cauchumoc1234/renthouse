@@ -88,20 +88,16 @@
             background-color: rgb(130, 136, 136);
             border: 2px solid rgb(156, 154, 154);
         }
-        .profile-nmd {
-            margin: 50px auto;
-            width: 70%;
-        }
         @media only screen and (max-width: 768px){
             #mainForm{
                 margin: auto;
-                width: 100%;
-            }
-            .profile-nmd{
                 width: 90%;
             }
         }
-        
+        .profile-nmd {
+            margin: 50px auto;
+            width: 1200px;
+        }
         .my-form {
             margin: 0 auto!important;
             padding: 30px;
@@ -109,69 +105,45 @@
         }
     </style>
     <div class="profile-nmd">
-        <form role="form" id="mainForm" class="row my-form" action="{{ route('guest.updateProfile') }}" method="post" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <h3 id="tit">Thông tin tài khoản</h3>
+        <form id="mainForm" class="row my-form">
+            <h3 id="tit">Gửi báo cáo / báo cáo phòng vi phạm</h3>
             <div class="col-12">
-                <label for="email">Email</label>
-                <input id="email" type="email" value="{{ $user->email }}" placeholder="your_email@gmail.com" readonly>
+                <label for="room_id">Báo cáo phòng: <b>{{ $room->title }}</b></label>
+                <input id="room_id" type="text" value="{{ $room->id }}" name="room_id" placeholder="ID phòng" readonly>
             </div>
             {{--        <div class="col-12">--}}
             {{--            <label for="pass">Password</label>--}}
             {{--            <input type="password" value="">--}}
             {{--        </div>--}}
             <div class="col-12">
-                <label for="fullname">Họ tên</label>
-                <input type="text" id="fullname" name="name" value="{{ $user->name }}" placeholder="Your name">
-            </div>
-            <div class="col-12 col-md-4">
-                <label for="gender">Giới tính</label>
-                <select name="gender" id="gender">
-                    @if($user->gender == 1)
-                        <option value="1">Nam</option>
-                        <option value="2">Nữ</option>
-                        <option value="3">Khác</option>
-                    @elseif($user->gender == 2)
-                        <option value="2">Nữ</option>
-                        <option value="1">Nam</option>
-                        <option value="3">Khác</option>
-                    @else
-                        <option value="3">Khác</option>
-                        <option value="1">Nam</option>
-                        <option value="2">Nữ</option>
-                    @endif
-                </select>
-            </div>
-            <div class="col-12 col-md-8">
-                <label for="phonenumber">Số điện thoại</label>
-                <input type="text" id="phonenumber" name="phone" value="{{ $user->phone }}">
+                <label for="content">Nội dung</label>
+                <textarea type="text" id="content" name="content" value="" rows="5" cols="67" style="padding: 10px;" placeholder="Viết nội dung tại đây"></textarea>
             </div>
 
-            <div class="col-12 col-md-4">
-                <label for="birthdate">Ngày sinh</label>
-                <input type="text" id="birthdate" name="birthday" value="{{ $user->birthday }}">
-            </div>
-            <div class="col-12 col-md-8">
-                <label for="id">Số CMND/ Căn cước</label>
-                <input type="text" id="id" name="cmnd" value="{{ $user->CMND }}" placeholder="VD : 0335231548761">
-            </div>
-            <div class="col-12 ">
-                <label for="address">Địa chỉ</label>
-                <input type="text" name="address" value="{{ $user->address }}" id="address">
-            </div>
 
-            <div class="col-12">
-                <label for="avatar" class="fileContainer">Đổi ảnh đại diện
-                    <input type="file" id="avatar" name="new_avatar">
-                </label>
-            </div>
             <div class="col-12 ">
-                <button type="submit" class="btn btn-save">Lưu thay đổi</button>
+                <button type="button" onclick="storeReport()" class="btn btn-save" data-toggle="modal" data-target=".bd-example-modal-sm">Gửi báo cáo</button>
                 <a class="btn btn-cancel" href="">Huỷ</a>
             </div>
-
         </form>
+
+{{--        <div class="col-12 ">--}}
+{{--            <button class="btn btn-save" data-toggle="modal" data-target=".bd-example-modal-sm">Gửi báo cáo</button>--}}
+{{--            <a class="btn btn-cancel" href="">Huỷ</a>--}}
+{{--        </div>--}}
+
+    </div>
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                </div>
+                <div class="modal-body storeliked-msg">
+
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         // hiện thanh search phụ khi kéo xuống
@@ -188,14 +160,6 @@
 
     </script>
     <script src="../frontend/js/main.js"></script>
-    @if(session('update_status') == true)
-        <script>
-            function myF() {
-                alert('bạn đã thay đổi tài khoản thành công!');
-            }
-            getAvatarUser({{ $user->id }});
-            setTimeout(myF, 1500);
-        </script>
-    @endif
+
 @endsection
 

@@ -29,6 +29,7 @@
   object-position: center;
   border-radius: 50%;
 }
+/* fix width of popup-noti */
 .popup-noti{
   position: fixed;
   height: 100vh;
@@ -42,6 +43,45 @@
   align-items: center;
   transition: linear 0.3s;
 }
+/*css drop profile*/
+.profile{
+    position: relative;
+    margin-top: 1px;
+}
+.profile:hover .drop-menu{
+  opacity: 1;
+  z-index: 10;
+}
+.profile a{
+    color: white;
+    text-decoration: none;
+}
+.profile .drop-menu{
+    position: absolute;
+    width: 90%;
+    list-style-type: none;
+    background-color: rgb(255, 255, 255);
+    left: 10%;
+    text-align: center;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    z-index: -100;
+    transition: 0.3s;
+    border-radius: 5px;
+    top: 28px;
+}
+.profile .drop-menu a{
+    color: gray;
+}
+.drop-menu li{
+    padding: 8px 0px;
+    transition: 0.3s;
+}
+.drop-menu li:hover{
+    background-color: rgb(247, 231, 201);
+}
+/*end css drop profile*/
 .note-tab{
   width: 50%;
   max-width: 400px;
@@ -67,6 +107,7 @@
   position: relative;
   transform: translateY(40px);
 }
+/* fix width of topbar */
 .top-bar {
   display: flex;
   justify-content: flex-end;
@@ -77,6 +118,7 @@
   z-index: 10;
   clear: right;
   flex-wrap: wrap;
+  box-sizing: border-box;
 }
 
 .top-bar .extra-menu {

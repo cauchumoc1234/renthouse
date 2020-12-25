@@ -26,8 +26,10 @@ class RoomController extends Controller
     {
         $this->checkExpired();
         $data = Room::latest()->paginate(20);
+        $paginate = true;
         return view('backend.room.index', [
-            'data' => $data
+            'data' => $data,
+            'paginate' => $paginate,
         ]);
     }
 
@@ -379,17 +381,20 @@ class RoomController extends Controller
 
     public function searchTitle($role)
     {
+        $paginate = false;
         $key_title = '';
         $key_title = $_GET['key_title'];
-        $search_query = "SELECT * FROM room WHERE MATCH(title)AGAINST('$key_title' WITH QUERY EXPANSION)";
+        $search_query = "SELECT * FROM room WHERE MATCH(title)AGAINST('$key_title')";
         $data = DB::select($search_query);
         if($role == 'admin') {
             return view('backend.room.index', [
-                'data' => $data
+                'data' => $data,
+                'paginate' => $paginate,
             ]);
         } else if ($role == 'owner') {
             return view('owner.room.index', [
-                'data' => $data
+                'data' => $data,
+                'paginate' => $paginate,
             ]);
         }
     }

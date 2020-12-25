@@ -22,14 +22,31 @@
 {{--                        <li><a href="#">Bạn ơi đừng boả vòng</a></li>--}}
 {{--                        <li><a href="#">Đme sấu này cứng thế nhỉ? Sấu này ướp đá à</a></li>--}}
                     </ul>
-                    <a href="#" class="all-note" id="notall">Xem tất cả</a>
+                    <a href="{{ route('guest.userprofile') }}" class="all-note" id="notall">Xem tất cả</a>
                 </div>
             </div>
-            <a id="link-profile" href="{{ route('guest.userprofile') }}" style="margin-left:10px">
-                Xin chào, <span id="fullname">{{ $user->name }}</span>
-                <img src="{{ asset($user->image) }}" alt="profile_picture" id="profile-picture">
-            </a>
-            <a href="{{ route('guest.logout') }}" id="logout">Đăng xuất</a>
+            <div class="profile" onmouseover="show_profiledropdown()" onmouseleave="hide_profiledropdown()">
+                <a id="link-profile" class="link-profile" href="javascript:void(0)" style="margin-left:10px">
+                    Xin chào, <span id="fullname">{{ $user->name }}</span>
+                    <img src="{{ asset($user->image) }}" alt="profile_picture" id="profile-picture">
+                </a>
+                <ul class="drop-menu">
+                    <li><a href="{{ route('profile-info-page') }}">Thông tin cá nhân</a></li>
+                    <li><a href="{{ route('liked-rooms') }}">Các phòng đã thích</a></li>
+                    <li><a href="{{ route('guest.userprofile') }}">Đổi mật khẩu / Thông báo</a></li>
+                    <li><a href="{{ route('guest.logout') }}">Đăng xuất</a></li>
+                </ul>
+{{--                <a href="{{ route('guest.logout') }}" id="logout">Đăng xuất</a>--}}
+            </div>
+{{--            <a id="link-profile" href="{{ route('guest.userprofile') }}" style="margin-left:10px">--}}
+{{--                Xin chào, <span id="fullname">{{ $user->name }}</span>--}}
+{{--                <img src="{{ asset($user->image) }}" alt="profile_picture" id="profile-picture">--}}
+{{--            </a>--}}
+{{--                <ul class="drop-menu">--}}
+{{--                    <li><a href="#">Thông tin cá nhân</a></li>--}}
+{{--                    <li><a href="#">Đăng xuất</a></li>--}}
+{{--                </ul>--}}
+{{--            <a href="{{ route('guest.logout') }}" id="logout">Đăng xuất</a>--}}
         @else
             <a href="{{ route('guest.login-register') }}">Đăng nhập / </a><a href="{{ route('guest.login-register') }}">Đăng ký</a>
         @endif
@@ -39,7 +56,8 @@
     <!-- phần thanh tìm kiếm phụ,hiện ra khi scroll qua thanh tìm kiếm chính -->
     <div class="extra-menu">
         <a href="#" class="logo">
-            <img src="https://www.ohanaliving.vn/8541c2b17a0729942ed2a6f13b7b13e4.svg" class="logo-top" alt="logo">
+            <img src="https://grandetest.com/theme/findhouse-html/images/header-logo.png" class="logo-top" alt="logo">
+{{--            <span>RentHouse</span>--}}
         </a>
         <!-- form tìm kiếm -->
         <div class="search-box">
@@ -53,10 +71,10 @@
                     <option value="">TP. Hồ Chí Minh</option>
                 </select>
             </div>
-            <form action="" class="search-input" method="GET">
-                <input type="text" placeholder="Tìm kiếm theo địa điểm, quận, tên đường...">
+            <form action="{{ route('guest.searchFromHome') }}" class="search-input" method="GET">
+                <input type="text" name="key_title" placeholder="Tìm kiếm theo địa điểm, quận, tên đường...">
                 <div class="submit-button">
-                    <button id="search-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <button type="submit" id="search-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
             </form>
 

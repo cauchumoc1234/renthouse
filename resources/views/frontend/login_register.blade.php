@@ -104,7 +104,7 @@
             cursor: pointer;
             display: block;
             margin: auto;
-            background:rgb(252, 0, 155);;
+            background:rgb(252, 0, 155);
             border: 0;
             outline: 0;
             border-radius: 30px;
@@ -141,10 +141,14 @@
         #email-msg {
             font-size: 13px;
         }
+        /* sửa nếu chưa đồng ý điều khoản thì nút màu đậm hơn */
+        button:disabled{
+            background-color:rgba(197, 12, 135);
+        }
     </style>
     <div class="body main-section container-fluid">
         <div class="row">
-
+            <!-- đổi chữ thành tiếng việt, mật khẩu còn yêu cầu tối thiểu 6 ký tự,đồng ý điều khoản mới click được đăng ký -->
             <div class="hero">
                 <div class="form-box">
                     <!-- hộp nút chuyển form trên cùng -->
@@ -152,36 +156,36 @@
                         <!-- nút sáng -->
                         <div id="btn"></div>
 
-                        <button type="button" class="toggle-btn" onclick="login()">Log In</button>
-                        <button type="button" class="toggle-btn"  onclick="register()">Register</button>
+                        <button type="button" class="toggle-btn" onclick="login()">Đăng Nhập</button>
+                        <button type="button" class="toggle-btn"  onclick="register()">Đăng Ký</button>
                     </div>
                     <!-- form đăng nhập -->
                     <form role="form" id="login" action="{{ route('guest.postLogin') }}" class="input-group" method="post">
                         @csrf
-                        <input type="email" class="input-field" name="email" placeholder="User Name" required>
-                        <input type="password" class="input-field" name="password" placeholder="Enter Password" required>
+                        <input type="email" class="input-field" name="email" placeholder="Tên đăng nhập" required>
+                        <input type="password" class="input-field" name="password" placeholder="Nhập mật khẩu" required>
 
-                        <input type="checkbox" name="remember" id="remember" class="checkbox"><span class="rmb">Remember Password</span>
+                        <input type="checkbox" name="remember" id="remember" class="checkbox" ><span class="rmb">Nhớ mật khẩu</span>
                         @if(session('msg'))
                             <span role="alert" class="error-msg">{{ session('msg') }}</span>
                         @endif
 
-                        <button type="submit" class="submit-btn">Login</button>
+                        <button type="submit" class="submit-btn">Đăng nhập</button>
 
                     </form>
                     <!-- form đăng ký -->
                     <form role="form" id="register" action="{{ route('guest.postRegister') }}" class="input-group" method="post" enctype="multipart/form-data">
                         @csrf
-                        <input type="text" class="input-field" name="name" placeholder="User Name" required>
+                        <input type="text" class="input-field" name="username" placeholder="Tên đăng nhập" required>
                         <input type="email" class="input-field" id="register_email" name="email" placeholder="Email" pattern=".+@.+(\.[a-z]{2,3})" title="Kiểm tra lại định dạng email" onchange="checkExistsEmail()"  required>
                         <span id="email-msg"></span>
-                        <input type="password" class="input-field" id="register_password" name="password" placeholder="Enter Password" pattern=".{8,}" onchange="checkPass()" title="Mật khẩu phải từ 8 kí tự" required>
-                        <input type="password" class="input-field" id="register_re_password" name="re_password" placeholder="Enter Re-password" onchange="checkPass()" pattern=".{8,}" title="Mật khẩu phải từ 8 kí tự" required>
+                        <input type="password" class="input-field" id="register_password" name="password" placeholder="Nhập mật khẩu" pattern=".{6,}" onchange="checkPass()" title="Mật khẩu phải từ 6 kí tự" required>
+                        <input type="password" class="input-field" id="register_re_password" name="re_password" placeholder="Nhập lại mật khẩu" onchange="checkPass()" pattern=".{6,}" title="Mật khẩu phải từ 6 kí tự" required>
                         <p class="" id="checkPass" style="color: red; font-size: 13px" ></p>
                         <div>
-                            <input type="checkbox" name="" class="checkbox"><span class="rmb">I agree to ther term & conditions</span>
+                            <input type="checkbox" name="" class="checkbox" id="agree-ckd"><span class="rmb">Tôi đồng ý với các điều khoản & điều kiện</span>
                         </div>
-                        <button type="submit" class="submit-btn" id="submit_btn">Register</button>
+                        <button type="submit" class="submit-btn" id="submit_btn" disabled>Đăng Ký</button>
                     </form>
                 </div>
 
@@ -189,6 +193,8 @@
         </div>
     </div>
     <script src="../frontend/js/float_form.js"></script>
+    <!-- check "I agree" checkbox -->
+    <script src="../frontend/js/check_agree.js"></script>
     <script>
         function checkPass() {
             var pass = $('#register_password').val();

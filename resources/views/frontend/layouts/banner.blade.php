@@ -3,13 +3,13 @@
 
         <h3>Thông báo</h3>
         <ul class="list-noti">
-            <li><a href="1">Phòng bạn thích bị thuê con mẹ mất rồi</a></li>
-            <li><a href="">Gần trường của bạn có 1 phòng đang ế</a></li>
-            <li><a href="#">Cơ hội trúng 1 chuyến du lịch đến cung điện Westminster</a></li>
-            <li><a href="#">Bạn ơi đừng boả vòng</a></li>
-            <li><a href="#">Đme sấu này cứng thế nhỉ? Sấu này ướp đá à</a></li>
-            <li><a href="#">Đme sấu này cứng thế nhỉ? Sấu này ướp đá à</a></li>
-            <li><a href="#">Đme sấu này cứng thế nhỉ? Sấu này ướp đá à</a></li>
+{{--            <li><a href="1">Phòng bạn thích bị thuê con mẹ mất rồi</a></li>--}}
+{{--            <li><a href="">Gần trường của bạn có 1 phòng đang ế</a></li>--}}
+{{--            <li><a href="#">Cơ hội trúng 1 chuyến du lịch đến cung điện Westminster</a></li>--}}
+{{--            <li><a href="#">Bạn ơi đừng boả vòng</a></li>--}}
+{{--            <li><a href="#">Đme sấu này cứng thế nhỉ? Sấu này ướp đá à</a></li>--}}
+{{--            <li><a href="#">Đme sấu này cứng thế nhỉ? Sấu này ướp đá à</a></li>--}}
+{{--            <li><a href="#">Đme sấu này cứng thế nhỉ? Sấu này ướp đá à</a></li>--}}
         </ul>
         <nav aria-label="..." class="note-pag">
             <ul class="pagination">

@@ -12,6 +12,7 @@ use App\Room_type;
 use App\User;
 use App\User_comment;
 use App\User_like;
+use App\User_report;
 use App\User_views;
 use App\User_vote;
 use Illuminate\Http\Request;
@@ -129,6 +130,21 @@ class GuestController extends Controller
         ]);
     }
 
+    public function getLikedRooms()
+    {
+        $user = Auth::user();
+        $temp_data = User_like::where(['user_id' => $user->id])->get();
+        $room_id_arr = [];
+        foreach($temp_data as $t) {
+            $room_id_arr[] = $t->room_id;
+        }
+        $data = Room::where(['is_active' => 1])->whereIn('id', $room_id_arr)->get();
+//        dd($data);
+        return view('frontend.user.liked_rooms', [
+            'data' => $data
+        ]);
+    }
+
     public function getAllPosts()
     {
         $featured_blog = Post::where(['is_active' => 1, 'is_hot' => 1])->first();
@@ -149,9 +165,12 @@ class GuestController extends Controller
         $data->save();
         $author = User::findOrFail($data->user_id);
         $author_name = $author->name;
+        $related_post = Post::where(['is_active' => 1])->whereNotIn('id', [$post_id])->limit(3)->get();
+//        dd($related_post);
         return view('frontend.blog.blogDetail', [
            'data' => $data,
-            'author_name' => $author_name
+            'author_name' => $author_name,
+            'related_post' => $related_post,
         ]);
     }
 
@@ -160,6 +179,8 @@ class GuestController extends Controller
         $newest_rooms = Room::where(['is_active' => 1, 'city_id' => 1])->orderBy('created_at', 'DESC')->limit(6)->get();
         return view('frontend.room.index', [
             'data' => $newest_rooms,
+            'action' => 'showall',
+            'title' => 'Phòng mới nhất',
         ]);
     }
 
@@ -222,6 +243,7 @@ class GuestController extends Controller
         $owner = User::findOrFail($data->user_id);
         $owner_name = $owner->name;
         $owner_phone = $owner->phone;
+        $room_comments = User_comment::where(['room_id' => $room_id, 'is_approved' => 1])->get();
         // return json sau khi co frontend
         return view('frontend.room.show', [
             'data' => $data,
@@ -234,6 +256,7 @@ class GuestController extends Controller
             'owner_name' => $owner_name,
             'owner_phone' => $owner_phone,
             'star_voted' => $star_voted,
+            'comments' => $room_comments,
         ]);
     }
 
@@ -311,10 +334,17 @@ class GuestController extends Controller
         {
             $status = true;
             $user = Auth::user();
-            $like = new User_like();
-            $like->user_id = $user->id;
-            $like->room_id = $room_id;
-            $like->save();
+            $user_liked_check = User_like::where(['user_id' => $user->id, 'room_id' => $room_id])->first();
+            if($user_liked_check == null) {
+                $like = new User_like();
+                $like->user_id = $user->id;
+                $like->room_id = $room_id;
+                $like->save();
+            }
+            else {
+                $user_liked_check->updated_at = now();
+                $user_liked_check->save();
+            }
             return json_encode($status);
         }
         else {
@@ -322,6 +352,23 @@ class GuestController extends Controller
         }
 
     }
+    public function destroyLikedRoom($room_id)
+    {
+        // gọi tới hàm destroy của laravel để xóa 1 object
+//        dd("1234");
+        $user = Auth::user();
+        $deleted_query = "delete from user_like where user_id = $user->id AND room_id = $room_id";
+        DB::delete($deleted_query);
+//        dd("success");
+//        $user_liked = User_like::where(['user_id' => $user->id, 'room_id' => $room_id])->first();
+//        dd($user_liked);
+//        User_like::destroy($user_liked->id);
+        // Trả về dữ liệu json và trạng thái kèm theo thành công là 200
+        return response()->json([
+            'status' => true
+        ], 200);
+    }
+
 
     public function getAllRoomViewed($id)
     {
@@ -398,6 +445,43 @@ class GuestController extends Controller
             }
         }
         return json_encode($star_voted);
+    }
+
+    public function getSendReport($room_id)
+    {
+        $room = Room::findOrFail($room_id);
+        return view('frontend.room.reportRoom', [
+            'room' => $room,
+        ]);
+    }
+
+    public function storeReport()
+    {
+        if(!Auth::check())
+        {
+            $msg = 'Vui lòng đăng nhập để gửi báo cáo phòng';
+            return response()->json([
+                'status' => false,
+                'msg' => $msg
+            ]);
+        }
+        else {
+            $user = Auth::user();
+            $room_id = $_GET['room_id'];
+            $content = $_GET['content'];
+            $report_element = new User_report();
+            $report_element->receive_id = $room_id;
+            $report_element->title = 'Là 1 báo cáo';
+            $report_element->content = $content;
+            $report_element->sender_id = $user->id;
+            $report_element->is_active = 0;
+            $report_element->save();
+            $msg = 'Bạn đã gửi báo cáo thành công!';
+            return response()->json([
+                'status' => true,
+                'msg' => $msg,
+            ]);
+        }
     }
 
 }

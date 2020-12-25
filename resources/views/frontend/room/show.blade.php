@@ -46,6 +46,7 @@
             height: 40px;
             text-align: center;
             color: white;
+            border-radius: 5px;
         }
         .slide-show .button button:hover{
             background-color: rgba(53, 53, 53, 0.7);
@@ -129,6 +130,7 @@
             margin-right: 10px;
             padding: 8px 10px 8px 10px;
             border: 1px solid rgb(218, 208, 208);
+            border-radius: 5px;
         }
         .comments .your-cmt .post-cmt{
             padding: 5px 10px;
@@ -142,6 +144,7 @@
             margin-top: 10px;
             border: 1px solid rgb(233, 231, 231);
             padding: 0px 0 3px 0;
+            border-radius: 5px;
         }
         .other-cmt > #view-allcmt{
             font-size: 12px;
@@ -219,13 +222,24 @@
         }
         .add-to-wl{
             margin-top: 10px;
-            background-color: rgb(240, 89, 89);
+            background-color: rgb(240, 89, 89)!important;
             outline: none;
             border: none;
             transition: 0.2s;
         }
         .add-to-wl:hover{
             background-color: rgb(236, 61, 61);
+        }
+        /* report button */
+        .rp-btn{
+            margin-top: 21px;
+            background-color: rgb(233, 178, 75);
+            color: white;
+            transition: 0.2s;
+        }
+        .rp-btn:hover{
+            background-color: rgb(223, 167, 63);
+            color: white;
         }
 
         @media only screen and (max-width: 768px){
@@ -345,7 +359,10 @@
 {{--                        <i class="fa fa-heart" aria-hidden="true"></i>--}}
 {{--                        Lưu phòng này--}}
 {{--                    </div>--}}
-                </div>
+                     </div>
+                <a href="{{ route('guest.getSendReport', ['room_id' => $data->id]) }}" class="btn rp-btn" style="background-color: rgb(233, 178, 75);">
+                    <div class="btn rp-btn" ><i class="fa fa-flag" aria-hidden="true" ></i> Báo cáo</div>
+                </a>
                 <!-- thông tin chủ -->
                 <div class="owner-info adjust-font own col-12">
                     <p class="hd"><i class="fa fa-user bg-warning" aria-hidden="true"></i> Thông tin chủ phòng</p>
@@ -415,27 +432,23 @@ giá 1tr3-1tr5/tháng/người ( bao gồm điện nước + wifi , không ph
                     </div>
                     <div class="comments">
                         <div class="other-cmt">
-                            <div class="comment">
-                                <a href="#">Thành Draw</a>
-                                <span class="time">5 giờ trước</span>
-                                <p>Phòng an ninh tốt,hay mất dép</p>
-                            </div>
-                            <div class="comment">
-                                <a href="#">G-Dragon</a>
-                                <span class="time">10 giờ trước</span>
-                                <p>Bắt ở với Sơn Tùng rate 1*</p>
-                            </div>
-                            <div class="comment">
-                                <a href="#">Tiến Bịp</a>
-                                <span class="time">15 giờ trước</span>
-                                <p>Phòng không có bình đá</p>
-                            </div>
-                            <div class="comment">
-                                <a href="#">Trường Con</a>
-                                <span class="time">1 ngày trước</span>
-                                <p>Không cho nấu cơm không ăn trực được, 1*</p>
-                            </div>
-                            <span id="view-allcmt" href="#" class="ml-2">Xem tất cả</span>
+                            @if(count($comments) > 0)
+                                @foreach($comments as $cmt)
+                                    <div class="comment">
+                                        <a href="#">{{ \App\User::findOrFail($cmt->user_id)->name }}</a>
+                                        <span class="time">{{ date_format($cmt->created_at, 'd-m-Y H:m') }}</span>
+                                        <p>{{ $cmt->comment }}</p>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="comment">
+                                    <a href="#">Admin</a>
+                                    <span class="time">bây giờ</span>
+                                    <p>Bài đăng chưa có bình luận nào.</p>
+                                </div>
+                            @endif
+
+{{--                            <span id="view-allcmt" href="#" class="ml-2">Xem tất cả</span>--}}
                         </div>
                         <form class="your-cmt" id="myForm">
                             <textarea name="" id="user_comment" cols="30" rows="1" maxlength="150" placeholder="Nhập bình luận..."></textarea>
