@@ -25,6 +25,7 @@
                     <a href="{{ route('guest.userprofile') }}" class="all-note" id="notall">Xem tất cả</a>
                 </div>
             </div>
+<<<<<<< HEAD
             <div class="profile" onmouseover="show_profiledropdown()" onmouseleave="hide_profiledropdown()">
                 <a id="link-profile" class="link-profile" href="javascript:void(0)" style="margin-left:10px">
                     Xin chào, <span id="fullname">{{ $user->name }}</span>
@@ -47,6 +48,13 @@
 {{--                    <li><a href="#">Đăng xuất</a></li>--}}
 {{--                </ul>--}}
 {{--            <a href="{{ route('guest.logout') }}" id="logout">Đăng xuất</a>--}}
+=======
+            <a id="link-profile" href="{{ route('guest.userprofile') }}" style="margin-left:10px">
+                Xin chào, <span id="fullname">{{ $user->name }}</span>
+                <img src="{{ asset($user->image) }}" alt="profile_picture" id="profile-picture">
+            </a>
+            <a href="{{ route('guest.logout') }}" id="logout">Đăng xuất</a>
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
         @else
             <a href="{{ route('guest.login-register') }}">Đăng nhập / </a><a href="{{ route('guest.login-register') }}">Đăng ký</a>
         @endif

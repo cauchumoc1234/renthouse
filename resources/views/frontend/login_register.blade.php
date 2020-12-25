@@ -141,10 +141,13 @@
         #email-msg {
             font-size: 13px;
         }
+<<<<<<< HEAD
         /* sửa nếu chưa đồng ý điều khoản thì nút màu đậm hơn */
         button:disabled{
             background-color:rgba(197, 12, 135);
         }
+=======
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
     </style>
     <div class="body main-section container-fluid">
         <div class="row">
@@ -176,6 +179,7 @@
                     <!-- form đăng ký -->
                     <form role="form" id="register" action="{{ route('guest.postRegister') }}" class="input-group" method="post" enctype="multipart/form-data">
                         @csrf
+<<<<<<< HEAD
                         <input type="text" class="input-field" name="username" placeholder="Tên đăng nhập" required>
                         <input type="email" class="input-field" id="register_email" name="email" placeholder="Email" pattern=".+@.+(\.[a-z]{2,3})" title="Kiểm tra lại định dạng email" onchange="checkExistsEmail()"  required>
                         <span id="email-msg"></span>
@@ -186,6 +190,18 @@
                             <input type="checkbox" name="" class="checkbox" id="agree-ckd"><span class="rmb">Tôi đồng ý với các điều khoản & điều kiện</span>
                         </div>
                         <button type="submit" class="submit-btn" id="submit_btn" disabled>Đăng Ký</button>
+=======
+                        <input type="text" class="input-field" name="name" placeholder="User Name" required>
+                        <input type="email" class="input-field" id="register_email" name="email" placeholder="Email" pattern=".+@.+(\.[a-z]{2,3})" title="Kiểm tra lại định dạng email" onchange="checkExistsEmail()"  required>
+                        <span id="email-msg"></span>
+                        <input type="password" class="input-field" id="register_password" name="password" placeholder="Enter Password" pattern=".{8,}" onchange="checkPass()" title="Mật khẩu phải từ 8 kí tự" required>
+                        <input type="password" class="input-field" id="register_re_password" name="re_password" placeholder="Enter Re-password" onchange="checkPass()" pattern=".{8,}" title="Mật khẩu phải từ 8 kí tự" required>
+                        <p class="" id="checkPass" style="color: red; font-size: 13px" ></p>
+                        <div>
+                            <input type="checkbox" name="" class="checkbox"><span class="rmb">I agree to ther term & conditions</span>
+                        </div>
+                        <button type="submit" class="submit-btn" id="submit_btn">Register</button>
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
                     </form>
                 </div>
 
@@ -193,8 +209,11 @@
         </div>
     </div>
     <script src="../frontend/js/float_form.js"></script>
+<<<<<<< HEAD
     <!-- check "I agree" checkbox -->
     <script src="../frontend/js/check_agree.js"></script>
+=======
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
     <script>
         function checkPass() {
             var pass = $('#register_password').val();

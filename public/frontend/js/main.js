@@ -36,6 +36,7 @@ function getAvatarUser(user_id) {
     });
 }
 
+<<<<<<< HEAD
 function storeLikedRoom(room_id) {
     $.ajax({
         url: base_url + '/storeLiked/'+room_id, // base_url được khai báo ở đầu page == http://renthouse.co
@@ -198,3 +199,5 @@ function storeReport() {
 
 
 }
+=======
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951

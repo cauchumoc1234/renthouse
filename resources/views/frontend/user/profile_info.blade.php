@@ -88,6 +88,7 @@
             background-color: rgb(130, 136, 136);
             border: 2px solid rgb(156, 154, 154);
         }
+<<<<<<< HEAD
         .profile-nmd {
             margin: 50px auto;
             width: 70%;
@@ -102,6 +103,18 @@
             }
         }
         
+=======
+        @media only screen and (max-width: 768px){
+            #mainForm{
+                margin: auto;
+                width: 90%;
+            }
+        }
+        .profile-nmd {
+            margin: 50px auto;
+            width: 1200px;
+        }
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
         .my-form {
             margin: 0 auto!important;
             padding: 30px;
@@ -160,6 +173,7 @@
                 <label for="address">Địa chỉ</label>
                 <input type="text" name="address" value="{{ $user->address }}" id="address">
             </div>
+<<<<<<< HEAD
 
             <div class="col-12">
                 <label for="avatar" class="fileContainer">Đổi ảnh đại diện
@@ -187,6 +201,21 @@
 
 
     </script>
+=======
+
+            <div class="col-12">
+                <label for="avatar" class="fileContainer">Đổi ảnh đại diện
+                    <input type="file" id="avatar" name="new_avatar">
+                </label>
+            </div>
+            <div class="col-12 ">
+                <button type="submit" class="btn btn-save">Lưu thay đổi</button>
+                <a class="btn btn-cancel" href="">Huỷ</a>
+            </div>
+
+        </form>
+    </div>
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
     <script src="../frontend/js/main.js"></script>
     @if(session('update_status') == true)
         <script>

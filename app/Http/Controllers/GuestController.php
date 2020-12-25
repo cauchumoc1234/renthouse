@@ -130,6 +130,7 @@ class GuestController extends Controller
         ]);
     }
 
+<<<<<<< HEAD
     public function getLikedRooms()
     {
         $user = Auth::user();
@@ -145,6 +146,8 @@ class GuestController extends Controller
         ]);
     }
 
+=======
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
     public function getAllPosts()
     {
         $featured_blog = Post::where(['is_active' => 1, 'is_hot' => 1])->first();
@@ -262,6 +265,56 @@ class GuestController extends Controller
 
     public function updateProfile(Request $request)
     {
+<<<<<<< HEAD
+=======
+
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+        ]);
+        $user = Auth::user();
+
+        //luu vào csdl
+        $user->name = $request->input('name'); // họ tên
+        $user->birthday = $request->input('birthday');
+        $user->CMND = $request->input('cmnd');
+        $user->phone = $request->input('phone');
+        $user->address = $request->input('address');
+        $user->gender = $request->input('gender');
+        if ($request->hasFile('new_avatar')) {
+            // xóa file cũ
+            @unlink(public_path($user->image)); // hàm unlink của PHP không phải laravel , chúng ta thêm @ đằng trước tránh bị lỗi
+            // get file
+            $file = $request->file('new_avatar');
+            // get ten
+            $filename = time().'_'.$file->getClientOriginalName();
+            // duong dan upload
+            $path_upload = 'uploads/user/';
+            // upload file
+            $request->file('new_avatar')->move($path_upload,$filename);
+
+            $user->image = $path_upload.$filename;
+        }
+
+        $user->save();
+        $new_link_image = 'http://renthouse.co/' . $user->image;
+        // chuyen dieu huong trang
+        return redirect()->back()->with('update_status', 'true');
+    }
+//    public  function test()
+//    {
+//        $user = Auth::user();
+//        return view('frontend.user.test', [
+//            'user' => $user
+//        ]);
+//    }
+
+    public function getLinkAvatarUser($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        $link = 'http://renthouse.co/' . $user->image;
+        return json_encode($link);
+    }
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
 
         $validatedData = $request->validate([
             'name' => 'required|max:255',

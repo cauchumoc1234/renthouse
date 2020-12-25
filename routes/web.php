@@ -28,10 +28,13 @@ Route::get('/userprofile', 'GuestController@getProfile')->name('guest.userprofil
 Route::get('/profile-info', 'GuestController@getProfileinfo')->name('profile-info-page');
 Route::get('/changePassword', 'GuestController@getChangePassword')->name('changePassword-page');
 Route::get('/noti-page', 'GuestController@getNoti')->name('noti-page');
+<<<<<<< HEAD
 Route::get('/liked-rooms', 'GuestController@getLikedRooms')->name('liked-rooms');
 Route::get('/liked-room', function (){
    return view('frontend.user.liked_room');
 });
+=======
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
 // end route cho trang user profile
 Route::get('/blog', 'GuestController@getAllPosts')->name('guest.blog');
 
@@ -46,16 +49,30 @@ Route::match( ['put','patch'],'/updateProfile', 'GuestController@updateProfile')
 
 Route::get('/getAvatarUser/{user_id}', 'GuestController@getLinkAvatarUser');
 
+<<<<<<< HEAD
 Route::get('/guestComment', 'GuestController@postComment');
+=======
+Route::get('/testpage', 'GuestController@test');
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
 
 Route::get('/storeVoted/{room_id}/{count_star}', 'GuestController@storeVoted')->name('uservoted.store');
 
+<<<<<<< HEAD
 Route::get('/getVotedStar/{room_id}', 'GuestController@getRoomVotedStar');
 
 Route::get('/storeLiked/{room_id}', 'GuestController@storeLiked')->name('likedroom.store');
 
 Route::get('/deleteLikedRoom/{room_id}', 'GuestController@destroyLikedRoom');
 // Cac route o day phuc vu cho viec select iframe page o trang user
+=======
+// Cac route o day phuc vu cho viec select iframe page o trang user
+
+
+Route::get('/liked-rooms', function () {
+    return view('frontend.user.liked_rooms');
+});
+// end iframe trang user
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
 
 Route::get('/roomFilter/{under_p}/{r_type}/{c_id}/{d_id}/{w_owner}', 'SearchController@roomFilter')->name('guest.testFilter');
 

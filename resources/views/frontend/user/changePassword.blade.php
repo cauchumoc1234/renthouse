@@ -16,6 +16,7 @@
     }
 </style>
 <div class="root">
+<<<<<<< HEAD
     <form role="form" id="mainForm" class="row" action="{{ route('postchangePassword') }}" method="post" enctype="multipart/form-data">
         @csrf
         <h3 id="tit">Đổi mật khẩu</h3>
@@ -31,6 +32,24 @@
         <div class="col-12">
             <label for="re_new_password" class="f-w-500">Nhập lại mật khẩu mới</label>
             <input type="password" id="re_new_password" name="re_new_password" value="" placeholder="Nhập lại mật khẩu mới" onchange="checkPass()" pattern=".{8,}" title="Mật khẩu phải từ 8 kí tự" required>
+=======
+    <form role="form" id="mainForm" class="row" action="#" method="post" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <h3 id="tit">Đổi mật khẩu</h3>
+        <div class="col-12">
+            <label for="email" class="f-w-500">Mật khẩu cũ</label>
+            <input id="old_password" type="password" value="" placeholder="Nhập mật khẩu cũ tại đây" >
+            <span id="old-password-span">Làm route check pass cũ rồi làm đổi mật khẩu !!</span>
+        </div>
+        <div class="col-12">
+            <label for="new_password" class="f-w-500">Mật khẩu mới</label>
+            <input type="password" id="new_password" name="name" value="" placeholder="Nhập mật khẩu mới tại đây" onchange="checkPass()">
+        </div>
+        <div class="col-12">
+            <label for="re_new_password" class="f-w-500">Nhập lại mật khẩu mới</label>
+            <input type="password" id="re_new_password" name="name" value="" placeholder="Nhập lại mật khẩu mới" onchange="checkPass()">
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
             <span id="re-password-span"></span>
         </div>
 
@@ -41,11 +60,15 @@
 
     </form>
 </div>
+<<<<<<< HEAD
 @if(@session('status') == 'success')
     <script>
         alert('Bạn đã đổi mật khẩu thành công !');
     </script>
 @endif
+=======
+
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
 
 
 <script src="../frontend/js/iframeResizer.contentWindow.min.js"></script>
@@ -53,7 +76,11 @@
     function checkPass() {
         var pass = $('#new_password').val();
         var rePass = $('#re_new_password').val();
+<<<<<<< HEAD
         if ((pass != rePass) || (pass == '' && rePass == '')) {
+=======
+        if (pass != rePass) {
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
             $('#re-password-span').css('color', 'red');
             $('#re-password-span').html('Nhập lại mật khẩu không trùng khớp !');
             $('#submit_btn').attr('disabled', 'true');
@@ -63,6 +90,7 @@
             $('#submit_btn').removeAttr('disabled');
 
         }
+<<<<<<< HEAD
         // checkOldPassword();
     }
 
@@ -89,6 +117,8 @@
             }
         });
         // checkPass();
+=======
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
     }
 </script>
 

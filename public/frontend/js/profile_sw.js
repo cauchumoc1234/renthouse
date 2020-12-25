@@ -1,7 +1,11 @@
 // control profile page switcher
 var notiPath = "http://renthouse.co/noti-page";
 var profilePath = "http://renthouse.co/changePassword";
+<<<<<<< HEAD
 // var likedRoomPath = "http://renthouse.co/liked-rooms";
+=======
+var likedRoomPath = "http://renthouse.co/liked-rooms";
+>>>>>>> 032f69430ad6efda626c5ac697620a5f38a51951
 $(document).ready(function(){
     $("#acc-show").click(showProfile)
     $("#noti-show").click(showNotification)
